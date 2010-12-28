@@ -1,0 +1,9 @@
+Here is my solution to the 2007 mathematical contest in modeling. This was
+written in about 72 hours (hence the suboptimal code quality) and without much
+background in Python (hence the unidiomatic code).
+
+model.py was the original attempt, and I rewrote it as model2.py to run the
+final simulations.
+
+I don't remember exactly how to use it, but I remember tweaking the last
+couple of lines in various ways to get it to run with different parameters.

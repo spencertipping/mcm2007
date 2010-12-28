@@ -1,0 +1,91 @@
+% vim: set tw=80 ts=4 sw=4 :
+
+\documentclass{article}
+\usepackage{palatino}
+
+\begin{document}
+\section{The Graph Model}
+\subsection{Introduction}
+
+The graph model builds the airplane seating out of a graph of nodes, each
+connected bidirectionally to applicable adjacent nodes in one of the four
+cardinal directions. Each node contains an occupant. Aisles have connections in
+all directions and seats have connections horizontally.
+
+Passengers are all tracked exactly as they pass through the plane. Each one of
+them is randomly assigned with uniform probability zero, one, or two carry-on
+bags that must be stored in an overhead bin before the passenger is seated. It
+is assumed that the passenger will take the aisle closest to the assigned seat
+in every case, crossing no more seats than is absolutely necessary.
+
+Overhead bins are considered to be shared among several rows, usually two or
+three. The time required to load one additional bag into an overhead bin is
+directly proportional to the square root of the number of bags currently there.
+Thus, loading bags is of 3/2 order for the number of bags to load.
+
+Because of the structural flexibility present in the model, it is able to
+emulate planes with non-consistent geometries, such as the Boeing 767-400 with
+2-2-2 in the front and 2-3-2 in the back. We can also, although with more
+difficulty, implement planes with two floors such as the Airbus 380.
+
+The graph model is able to use a smaller sample size because of the
+recomputation of random data. Every time a node's delay is computed, it is
+re-randomized; thus, one single run will incorporate a broadly normalized set of
+random data. For this reason, we consider a sample size of 200 runs per
+configuration to be sufficient to accurately represent the performance of the
+different configurations.
+
+\subsection{Parameters}
+The major parameters of this model are:
+
+\begin{description}
+	\item[Aisle-aisle movement delay]
+		This determines how long it takes for a person to move one node through
+		an aisle. By default, the value is two seconds.
+
+	\item[Aisle-seat movement delay]
+		How long it takes to move from an aisle to a seat. By default, this is
+		three seconds.
+
+	\item[Seat-aisle movement delay]
+		How long it takes to move from a seat to an aisle. By default, this is
+		3.5 seconds.
+
+	\item[Seat-seat movement delay]
+		How long it takes to move from one seat to another. By default, this is
+		seven seconds.
+
+\end{description}
+
+\subsection{Strengths}
+
+One strength includes accurate simulation of shared luggage bins: A passenger
+loading a bag into a bin two rows ahead may influence the loading time of a
+piece of baggage elsewhere. In addition, luggage bins are shared for both sides
+of an aisle, which accurately models people's tendency to put luggage on either
+side of the aisle.
+
+Another is that aisle spaces are allocated for people moving across already
+taken seats, simulating the requirement of everyone clearing the occupied seats
+for the newcomer to move in. This accentuates the effectiveness of modifications
+to the strategies such as the even-odd variation or the staggered variation.
+
+A third strength is that if there is an aisle, an empty seat, a filled seat, and
+the target seat, in that order, and a passenger moves into the empty seat on his
+way to the target seat, he can get to the target seat only when the aisle is
+clear. This is by the rationale that all swapping must be done through an aisle.
+
+\subsection{Weaknesses}
+
+One weakness of the model is that it does not simulate people traveling very far
+to get to an empty luggage bin. Rather, luggage bins are assumed to have
+infinite capacity (although they would incur very large delays), and people do
+not ``prefer'' those bins with smaller delays. Also, the bin on the east side of
+the aisle is not distinct from the one on the west. This may affect the model's
+accuracy slightly.
+
+Further, passengers, when filling the aisle to make room for someone who needs
+access to a window seat, do not ever look north; if the south cell cannot be
+taken, then they incur extra time delays. This is somewhat inaccurate.
+
+\end{document}
